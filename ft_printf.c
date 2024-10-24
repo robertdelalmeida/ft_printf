@@ -28,130 +28,133 @@ int	ft_printf(const char *format, ...)
 
 int	ft_search_percent(va_list new_list, char *format)
 {
+	size_t	count;
 	size_t	i;
+	size_t	j;
 
 	i = 0;
+	j = 0;
+	count = 0;
 	while (format[i] != '\0')
 	{
 		if (format[i] == '%')
-			i += ft_check_type(format[i + 1], new_list);
+		{
+			count += ft_check_type(format, i, new_list);
+			j += 2;
+			i++;
+		}
 		else
 			ft_putchar_fd(format[i], 1);
 		i++;
 	}
-	return (i);
+	return (count + i - j);
 }
 
-int	ft_check_type(char c, va_list new_list)
+int	ft_check_type(char *str, int len, va_list new_list)
 {
-	t_conv *node;
+	size_t count;
 
-	node = ft_calloc(1, sizeof(t_conv));
-	if (c == 'c')
-		ft_ischar(new_list, node);
-	else if (c == 's')
-		ft_isstring(new_list, node);
-	else if (c == 'p')
-		ft_ispointer(new_list, node);
-	else if (c == 'd' || c == 'i')
-		ft_isnumber(new_list, node);
-	else if (c == 'u')
-		ft_isunsigned(new_list, node);
-	else if (c == 'x' || c == 'X')
-		ft_ishexa(new_list, node, c);
-	else
+	count = 0;
+	if (str[len + 1] == 'c')
+		count += ft_ischar(new_list, &str[len]);
+	else if (str[len + 1] == 's')
+		count += ft_isstring(new_list);
+	else if (str[len + 1] == 'p')
+		count += ft_ispointer(new_list);
+	else if (str[len + 1] == 'd' || str[len + 1] == 'i')
+		count += ft_isnumber(new_list);
+	else if (str[len + 1] == 'u')
+		count += ft_isunsigned(new_list);
+	else if (str[len + 1] == 'x' || str[len + 1] == 'X')
+		count += ft_ishexa(new_list, str[len + 1]);
+	else {
 		ft_putchar_fd('%', 1);
+		count++;
+	}
+	return (count);
+}
+
+int	ft_ischar(va_list new_list, char *str_format)
+{
+	char	c;
+
+	c = va_arg(new_list, int);
+	// /ft_check_flags(str_format, c);
+	ft_putchar_fd(c, 1);
 	return (1);
 }
 
-void	ft_ischar(va_list new_list, t_conv *node)
+int	ft_isstring(va_list new_list)
 {
-	(*node).c = va_arg(new_list, int);
-	ft_putchar_fd((*node).c, 1);
+	char	*str;
+	char	*arg;
+
+	arg = va_arg(new_list, char*);
+	str = malloc(ft_strlen(arg) + 1);
+	if (str == NULL)
+    	return (0);
+	ft_strlcpy(str, arg, ft_strlen(arg) + 1);
+	ft_putstr_fd(str, 1);
+	// printf("arg: %zu", ft_strlen(arg));
+	return (ft_strlen(arg));
 }
 
-void	ft_isstring(va_list new_list, t_conv *node)
+int	ft_ispointer(va_list new_list)
 {
-	(*node).string = va_arg(new_list, char*);
-	ft_putstr_fd((*node).string, 1);
-}
+	void	*ptr;
 
-void	ft_ispointer(va_list new_list, t_conv *node)
-{
 	ft_putstr_fd("0x", 1);
-	(*node).ptr = va_arg(new_list, void*);
-	ft_putnbr_base((unsigned long)(*node).ptr);
+	ptr = va_arg(new_list, void*);
+	ft_putnbr_base((unsigned long)ptr);
+	// ft_ptrlen((unsigned long) ptr);
+	return (14);
 }
 
-void	ft_isnumber(va_list new_list, t_conv *node)
+int	ft_isnumber(va_list new_list)
 {
-	(*node).d = va_arg(new_list, int);
-	ft_putnbr_fd((*node).d, 1);
+	int	d;
+
+	d = va_arg(new_list, int);
+	ft_putnbr_fd(d, 1);
+	// printf("d: %i", ft_nbrlen(d));
+	return (ft_nbrlen(d));
 }
 
-void	ft_isunsigned(va_list new_list, t_conv *node)
+int	ft_isunsigned(va_list new_list)
 {
-	(*node).u = va_arg(new_list, unsigned int);
-	ft_putnbr_fd((*node).u, 1);
+	unsigned int	u;
+
+	u = va_arg(new_list, unsigned int);
+	ft_putnbr_fd(u, 1);
+	// printf("u: %i", ft_nbrlen(u));
+	return (ft_nbrlen(u));
 }
 
-void	ft_ishexa(va_list new_list, t_conv *node, char c)
+int	ft_ishexa(va_list new_list, char c)
 {
+	unsigned int	x_lower;
+	unsigned int	x_upper;
+
 	if (c == 'x'){
-		(*node).x_lower = va_arg(new_list, int);
-		ft_putnbr_base((*node).x_lower);
+		x_lower = va_arg(new_list, int);
+		ft_putnbr_base(x_lower);
+		// ft_ptrlen((unsigned int) ptr)
+		return (2);
 	}
 	else
 	{
-		(*node).x_upper = va_arg(new_list, int);
-		ft_putnbr_base_upper((*node).x_upper);
-	}
-}
-
-void	ft_putptr(void *ptr)
-{
-	write(1, ptr, 14);
-}
-
-void	ft_putnbr_base(unsigned long nb)
-{
-	if (nb > 15)
-	{
-		ft_putnbr_base(nb / 16);
-		ft_putnbr_base(nb % 16);
-	}
-	else
-	{
-		if (nb >= 10)
-			ft_putchar_fd(nb - 10 + 'a', 1);
-		else
-			ft_putchar_fd(nb + '0', 1);
-	}
-}
-
-void	ft_putnbr_base_upper(unsigned long nb)
-{
-	if (nb > 15)
-	{
-		ft_putnbr_base_upper(nb / 16);
-		ft_putnbr_base_upper(nb % 16);
-	}
-	else
-	{
-		if (nb >= 10)
-			ft_putchar_fd(nb - 10 + 'A', 1);
-		else
-			ft_putchar_fd(nb + '0', 1);
+		x_upper = va_arg(new_list, int);
+		ft_putnbr_base_upper(x_upper);
+		return (2);
 	}
 }
 
 int	main(void)
 {
-	char *ptr = NULL;
-	unsigned int i = 2147483648;
+	char *ptr = "outubro";
 
-	ft_printf("hoje %c %d de %s de %i e o int máximo negativo é: %u, to no endereço %p, chance de %X%%", 'e', 23, "outubro", 2024, i, &ptr, 42);
-	ft_printf("\nbarra n\n");
-	printf("hoje %c %d de %s de %i e o int máximo negativo é: %u, to no endereço %p, chance de %X%%", 'e', 23, "outubro", 2024, i, &ptr, 42);
+	printf("\nlength: %d", ft_printf("%c %d de %s de %i %u %p %X%%", 'e', 23, ptr, 2024, (unsigned int)2147483648, &ptr, 42));
+	printf("\nbarra n\n");
+	printf("\nlength: %d", printf("%c %d de %s de %i %u %p %X%%", 'e', 23, ptr, 2024, (unsigned int)2147483648, &ptr, 42));
 	printf("\nbarra n\n");
 }

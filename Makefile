@@ -2,7 +2,8 @@ NAME		=	ft_printf
 CC			=	 gcc
 FLAGS		=	-Wall -Werror -Wextra
 
-SRCS		=	ft_printf.c
+SRCS		=	ft_printf.c \
+				ft_printf_utils.c
 
 LIBFT		=	libft/libft.a
 
