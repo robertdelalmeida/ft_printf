@@ -1,9 +1,11 @@
-NAME		=	ft_printf
+NAME		=	libftprintf.a
 CC			=	 gcc
 FLAGS		=	-Wall -Werror -Wextra
 
 SRCS		=	ft_printf.c \
-				ft_printf_utils.c
+				ft_printf_len.c \
+				ft_printf_conversion.c \
+				ft_lib.c
 
 LIBFT		=	libft/libft.a
 
@@ -14,12 +16,11 @@ AR			=	ar rcs
 RM			=	rm -rf
 
 OBJS		=	${SRCS:.c=.o}
-OBJS_BONUS	=	${SRCS_BONUS:.c=.o}
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	${CC} ${FLAGS} ${OBJS} ${LIBFT} ${INCLUDES} -o ${NAME}
+	${AR} ${NAME} ${OBJS}
 
 %.o:%.c ${INCLUDES}
 	${CC} ${FLAGS} -c $< -o $@
