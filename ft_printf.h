@@ -6,7 +6,7 @@
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 10:43:53 by rdel-fra          #+#    #+#             */
-/*   Updated: 2024/10/25 17:53:12 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/10/25 18:13:05 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ int		ft_ishexa(va_list new_list, char *str_format, char c);
 int		ft_check_type(char *str, size_t len, va_list new_list);
 int		ft_printf(const char *format, ...);
 void	ft_putptr(void *ptr);
+void	ft_putnbr_fd(long n, int fd);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putchar_fd(char c, int fd);
 void	ft_putnbr_base(unsigned long nb);
 void	ft_putnbr_base_upper(unsigned long nb);
 size_t	ft_nbrlen(long n);
 size_t	ft_jump(char *str);
 size_t	ft_hexa_len(unsigned long n);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putnbr_fd(long n, int fd);
 size_t	ft_strlen(const char *str);
 
 #endif

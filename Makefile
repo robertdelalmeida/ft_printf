@@ -7,8 +7,6 @@ SRCS		=	ft_printf.c \
 				ft_printf_conversion.c \
 				ft_lib.c
 
-LIBFT		=	libft/libft.a
-
 INCLUDES	=	-Ilibft \
 				-I.
 
