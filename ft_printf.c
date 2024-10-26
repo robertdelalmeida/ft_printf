@@ -27,6 +27,7 @@ int	ft_printf(const char *format, ...)
 
 int	ft_search_percent(va_list new_list, char *format)
 {
+	t_flags	list;
 	size_t	count;
 	size_t	i;
 	size_t	j;
@@ -34,15 +35,17 @@ int	ft_search_percent(va_list new_list, char *format)
 	i = 0;
 	j = 0;
 	count = 0;
+	ft_initialize_flags(&list);
 	while (format[i] != '\0')
 	{
 		if (format[i] == '%')
 		{
+			j += ft_check_flags(&format[i], list);
+			// ft_print_flags();
 			count += ft_check_type(format, i, new_list);
-			j += ft_jump(&format[i]);
 			if (format[i + 1] == '%')
 				count++;
-			i++;
+			i += j;
 		}
 		else
 			ft_putchar_fd(format[i], 1);
@@ -77,21 +80,6 @@ int	ft_check_type(char *str, size_t len, va_list new_list)
 	else
 		ft_putchar_fd('%', 1);
 	return (count);
-}
-
-size_t	ft_jump(char *str)
-{
-	size_t	j;
-
-	j = 1;
-	while (str[j] != 'c' && str[j] != 's' && str[j] != 'p' && str[j] != 'd'
-		&& str[j] != 'i' && str[j] != 'u' && str[j] != 'x' && str[j] != 'X')
-	{
-		if (str[j] == '%')
-			break ;
-		j++;
-	}
-	return (j + 1);
 }
 
 int	ft_ischar(va_list new_list, char *str_format)

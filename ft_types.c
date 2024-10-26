@@ -14,7 +14,6 @@
 
 int	ft_isstring(va_list new_list, char *str_format)
 {
-	char	*str;
 	char	*arg;
 
 	arg = va_arg(new_list, char *);
@@ -23,12 +22,7 @@ int	ft_isstring(va_list new_list, char *str_format)
 		ft_putstr_fd("(null)", 1);
 		return (6);
 	}
-	str = malloc(ft_strlen(arg) + 1);
-	if (str == NULL)
-		return (0);
-	ft_strlcpy(str, arg, ft_strlen(arg) + 1);
-	ft_putstr_fd(str, 1);
-	free(str);
+	ft_putstr_fd(arg, 1);
 	return (ft_strlen(arg));
 }
 
@@ -67,19 +61,12 @@ int	ft_isunsigned(va_list new_list, char *str_format)
 
 int	ft_ishexa(va_list new_list, char *str_format, char c)
 {
-	unsigned int	x_lower;
-	unsigned int	x_upper;
+	unsigned int	x;
 
+	x = va_arg(new_list, int);
 	if (c == 'x')
-	{
-		x_lower = va_arg(new_list, int);
-		ft_putnbr_base(x_lower);
-		return (ft_hexa_len(x_lower));
-	}
+		ft_putnbr_base(x);
 	else
-	{
-		x_upper = va_arg(new_list, int);
-		ft_putnbr_base_upper(x_upper);
-		return (ft_hexa_len(x_upper));
-	}
+		ft_putnbr_base_upper(x);
+	return (ft_hexa_len(x));
 }

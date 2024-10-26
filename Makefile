@@ -3,12 +3,12 @@ CC			=	 gcc
 FLAGS		=	-Wall -Werror -Wextra
 
 SRCS		=	ft_printf.c \
-				ft_printf_len.c \
-				ft_printf_conversion.c \
-				ft_lib.c
+				ft_aux_len.c \
+				ft_types.c \
+				ft_flags.c \
+				ft_lib.c 
 
-INCLUDES	=	-Ilibft \
-				-I.
+INCLUDES	=	-I.
 
 AR			=	ar rcs
 RM			=	rm -rf

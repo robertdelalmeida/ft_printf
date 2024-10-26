@@ -49,18 +49,17 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	size_t	j;
+	char	*ptr;
+	size_t	i;
 
-	if (size == 0)
-		return (ft_strlen(src));
-	j = 0;
-	while (src[j] != '\0' && j < size - 1)
+	ptr = (char *)s;
+	i = 0;
+	while (i < n)
 	{
-		dst[j] = src[j];
-		j++;
+		ptr[i] = c;
+		i++;
 	}
-	dst[j] = '\0';
-	return (ft_strlen(src));
+	return (ptr);
 }
