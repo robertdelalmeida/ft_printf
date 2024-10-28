@@ -6,7 +6,7 @@ SRCS		=	ft_printf.c \
 				ft_aux_len.c \
 				ft_types.c \
 				ft_flags.c \
-				ft_lib.c 
+				ft_lib.c
 
 INCLUDES	=	-I.
 
@@ -23,6 +23,8 @@ ${NAME}: ${OBJS}
 %.o:%.c ${INCLUDES}
 	${CC} ${FLAGS} -c $< -o $@
 
+bonus: ${OBJS}
+
 clean:
 	${RM} ${OBJS}
 
@@ -31,4 +33,4 @@ fclean:	clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

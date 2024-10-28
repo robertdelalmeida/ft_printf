@@ -6,7 +6,7 @@
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 15:57:21 by rdel-fra          #+#    #+#             */
-/*   Updated: 2024/10/25 18:50:28 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:01:18 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,4 @@ size_t	ft_strlen(const char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
-}
-
-void	*ft_memset(void *s, int c, size_t n)
-{
-	char	*ptr;
-	size_t	i;
-
-	ptr = (char *)s;
-	i = 0;
-	while (i < n)
-	{
-		ptr[i] = c;
-		i++;
-	}
-	return (ptr);
 }
