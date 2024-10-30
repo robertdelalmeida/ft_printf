@@ -6,7 +6,7 @@
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:57:46 by rdel-fra          #+#    #+#             */
-/*   Updated: 2024/10/28 15:33:10 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:05:41 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,17 @@ int	ft_ishexa(va_list new_list, t_list *flags, char c)
 	x = va_arg(new_list, int);
 	if (c == 'x')
 	{
-		if ((*flags).hash == 1)
+		if ((*flags).hash == 1 && x != 0)
 			ft_putstr_fd("0x", 1);
 		ft_putnbr_base(x);
 	}
 	else
 	{
-		if ((*flags).hash == 1)
+		if ((*flags).hash == 1 && x != 0)
 			ft_putstr_fd("0X", 1);
 		ft_putnbr_base_upper(x);
 	}
-	if ((*flags).hash == 1)
+	if ((*flags).hash == 1 && x != 0)
 		hash_count = 2;
 	return (ft_hexa_len(x) + hash_count);
 }

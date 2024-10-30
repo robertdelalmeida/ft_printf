@@ -3,7 +3,7 @@ CC			=	 gcc
 FLAGS		=	-Wall -Werror -Wextra
 
 SRCS		=	ft_printf.c \
-				ft_aux_len.c \
+				ft_utils.c \
 				ft_types.c \
 				ft_flags.c \
 				ft_lib.c

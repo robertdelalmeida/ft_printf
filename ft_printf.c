@@ -6,7 +6,7 @@
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:42:52 by rdel-fra          #+#    #+#             */
-/*   Updated: 2024/10/28 18:53:02 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:39:11 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ int	ft_printf(const char *format, ...)
 	va_start(new_list, format);
 	count = ft_search_percent(new_list, (char *)format);
 	va_end(new_list);
+	if (count == -1)
+		return (0);
 	return (count);
 }
 
-int	ft_search_percent(va_list new_list, char *format)
+size_t	ft_search_percent(va_list new_list, char *format)
 {
 	t_list	flags;
 	size_t	count;
@@ -35,9 +37,9 @@ int	ft_search_percent(va_list new_list, char *format)
 	i = 0;
 	j = 0;
 	count = 0;
-	ft_initialize_flags(&flags);
 	while (format[i] != '\0')
 	{
+		ft_initialize_flags(&flags);
 		if (format[i] == '%')
 		{
 			i++;
@@ -54,7 +56,7 @@ int	ft_search_percent(va_list new_list, char *format)
 	return (i + count - j);
 }
 
-int	ft_check_type(char *str, size_t len, va_list new_list, t_list *flags)
+size_t	ft_check_type(char *str, size_t len, va_list new_list, t_list *flags)
 {
 	size_t	count;
 	size_t	j;
@@ -104,7 +106,7 @@ int	ft_ischar(va_list new_list)
 }
 
 /*
-static void printcmp(int a, int b)
+void printcmp(int a, int b)
 {
     if (a == b)
     {
@@ -124,19 +126,23 @@ int main(void)
     ptr = &str;
 
     ft_printf("---------my func-----------\n");
-    myfunc = ft_printf("c flag: %c|%c|%c|%c|%c\n", 'r', str[2], 97 - 32, *str, 48);
+    myfunc = ft_printf("c flag: %c|%c|%c|%c|%c\n", 'r', str[2],
+     97 - 32, *str, 48);
     
     ft_printf("\n---------original-----------\n");
-	original = printf("c flag: %c|%c|%c|%c|%c\n", 'r', str[2], 97 - 32, *str, 48);
+	original = printf("c flag: %c|%c|%c|%c|%c\n", 'r', str[2],
+     97 - 32, *str, 48);
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf("s flag: %s|%s|%s|%s|%s|%s\n", "12ozmouse", str, str + 2, "", "-", nulo);
+    myfunc = ft_printf("s flag: %s|%s|%s|%s|%s|%s\n", "12ozmouse",
+     str, str + 2, "", "-", nulo);
     
     ft_printf("\n---------original-----------\n");
-    original = printf("s flag: %s|%s|%s|%s|%s|%s\n", "12ozmouse", str, str + 2, "", "-", nulo);
+    original = printf("s flag: %s|%s|%s|%s|%s|%s\n", "12ozmouse",
+     str, str + 2, "", "-", nulo);
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
@@ -153,46 +159,56 @@ int main(void)
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf("d flag: %d|%d|%d|%d|%d\n", 7, -7, 0, 2147483647, -2147483648);
+    myfunc = ft_printf("d flag: %d|%d|%d|%d|%d\n", 7, -7, 0,
+     2147483647, -2147483648);
 
     ft_printf("\n---------original-----------\n");
-    original = printf("d flag: %d|%d|%d|%d|%d\n", 7, -7, 0, 2147483647, -2147483647 - 1);
+    original = printf("d flag: %d|%d|%d|%d|%d\n", 7, -7, 0,
+     2147483647, -2147483647 - 1);
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf("i flag: %i|%i|%i|%i|%i\n", 7, -7, 0, 2147483647, -2147483648);
+    myfunc = ft_printf("i flag: %i|%i|%i|%i|%i\n", 7, -7, 0,
+     2147483647, -2147483648);
 
     ft_printf("\n---------original-----------\n");
-    original = printf("i flag: %i|%i|%i|%i|%i\n", 7, -7, 0, 2147483647, -2147483647 - 1);
+    original = printf("i flag: %i|%i|%i|%i|%i\n", 7, -7, 0,
+     2147483647, -2147483647 - 1);
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf("u flag: %u|%u|%u|%u|%u\n", 7, -7, 0, 2147483647, -2147483648);
+    myfunc = ft_printf("u flag: %u|%u|%u|%u|%u\n", 7, -7, 0,
+     2147483647, -2147483648);
 
     ft_printf("\n---------original-----------\n");
-    original = printf("u flag: %u|%u|%u|%u|%u\n", 7, -7, 0, 2147483647, -2147483647 - 1);
+    original = printf("u flag: %u|%u|%u|%u|%u\n", 7, -7, 0,
+     2147483647, -2147483647 - 1);
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf("x flag: %x|%x|%x|%x|%x\n", 7, -7, 0, 2147483647, -2147483648);
+    myfunc = ft_printf("x flag: %x|%x|%x|%x|%x\n", 7, -7, 0,
+     2147483647, -2147483648);
 
     ft_printf("\n---------original-----------\n");
-    original = printf("x flag: %x|%x|%x|%x|%x\n", 7, -7, 0, 2147483647, -2147483647 - 1);
+    original = printf("x flag: %x|%x|%x|%x|%x\n", 7, -7, 0,
+     2147483647, -2147483647 - 1);
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf("X flag: %X|%X|%X|%X|%X\n", 7, -7, 0, 2147483647, -2147483648);
+    myfunc = ft_printf("X flag: %X|%X|%X|%X|%X\n", 7, -7, 0,
+     2147483647, -2147483648);
 
     ft_printf("\n---------original-----------\n");
-    original = printf("X flag: %X|%X|%X|%X|%X\n", 7, -7, 0, 2147483647, -2147483647 - 1);
+    original = printf("X flag: %X|%X|%X|%X|%X\n", 7, -7, 0,
+     2147483647, -2147483647 - 1);
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
@@ -207,28 +223,34 @@ int main(void)
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf(", I've printed %d characters!\n", ft_printf("d flag: %d|%d|%d|%d", 0, -37, 37, 187398217));
+    myfunc = ft_printf(", I've printed %d characters!\n",
+     ft_printf("d flag: %d|%d|%d|%d", 0, -37, 37, 187398217));
 
     ft_printf("\n---------original-----------\n");
-    original = printf(", I've printed %d characters!\n", printf("d flag: %d|%d|%d|%d", 0, -37, 37, 187398217));
+    original = printf(", I've printed %d characters!\n",
+     printf("d flag: %d|%d|%d|%d", 0, -37, 37, 187398217));
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf(", I've printed %d characters!\n", ft_printf("d flag: %d|%d|%d|%d", 0, -22222, 'n', 0));
+    myfunc = ft_printf(", I've printed %d characters!\n",
+     ft_printf("d flag: %d|%d|%d|%d", 0, -22222, 'n', 0));
 
     ft_printf("\n---------original-----------\n");
-    original = printf(", I've printed %d characters!\n", printf("d flag: %d|%d|%d|%d", 0, -22222, 'n', 0));
+    original = printf(", I've printed %d characters!\n",
+     printf("d flag: %d|%d|%d|%d", 0, -22222, 'n', 0));
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
-    myfunc = ft_printf(", I've printed %d characters!\n", ft_printf("INT MIN: %d", -2147483647 - 1));
+    myfunc = ft_printf(", I've printed %d characters!\n",
+     ft_printf("INT MIN: %d", -2147483647 - 1));
 
     ft_printf("\n---------original-----------\n");
-    original = printf(", I've printed %d characters!\n", printf("INT MIN: %d", -2147483647 - 1));
+    original = printf(", I've printed %d characters!\n",
+     printf("INT MIN: %d", -2147483647 - 1));
 
     ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);

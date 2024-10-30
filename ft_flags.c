@@ -6,7 +6,7 @@
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 12:13:52 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/28 18:56:22 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:40:04 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_initialize_flags(t_list *flags)
 
 size_t	ft_check_flags(char *s, t_list *flags)
 {
-	int		flag;
+	size_t	flag;
 	size_t	j;
 
 	j = 0;
@@ -41,18 +41,21 @@ size_t	ft_check_flags(char *s, t_list *flags)
 	return (j + 2);
 }
 
+// int	ft_validation(char *s, t_list flags)
+// {
+// 	size_t	c;
+// 	c = 0;
+// 	if (s[c] == 'c' && (flags.space == 1 || flags.sign == 1
+//		|| flags.hash == 1))
+// 		return (0);
+// 	else if (s[c] == 's' && (flags.space == 1 || flags.sign == 1
+//		|| flags.hash == 1))
+// 		return (0);
+// 	return (1);
+// }
 // int main()
 // {
-// 	ft_printf("length: %d\n", ft_printf(" %%%%%% "));
+// 	ft_printf("length: %d\n", ft_printf(" % 1s", ""));
 // 	ft_printf("\n\n");
-// 	printf("length: %d\n", printf(" %%%%%% "));
+// 	printf("length: %d\n", printf(" % 1s", ""));
 // }
-
-	// space with s
-	// TEST(2, print(" % 1s", ""));
-	// TEST(3, print("% 1s ", ""));
-
-	// # with x and X
-	// TEST(1, print(" %x ", 0));
-	// TEST(25, print(" %x ", LONG_MIN));
-	// TEST(29, print(" %x %x %x %x %x %x %x", INT_MAX, INT_MIN, LONG_MAX, LONG_MIN, ULONG_MAX, 0, -42));
