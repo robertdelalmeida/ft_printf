@@ -6,7 +6,7 @@
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 12:13:52 by marvin            #+#    #+#             */
-/*   Updated: 2024/10/30 10:40:04 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:50:00 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,13 @@ size_t	ft_check_flags(char *s, t_list *flags)
 // 		return (0);
 // 	return (1);
 // }
+//
+// cc -Wall -Wextra -Werror ft_flags.c ft_printf.c ft_printf.h
+// ft_lib.c ft_types.c ft_utils.c;
+//
 // int main()
 // {
-// 	ft_printf("length: %d\n", ft_printf(" % 1s", ""));
+// 	ft_printf("length: %d\n", ft_printf("% +d", 42));
 // 	ft_printf("\n\n");
-// 	printf("length: %d\n", printf(" % 1s", ""));
+// 	printf("length: %d\n", printf("% +d", 42));
 // }
