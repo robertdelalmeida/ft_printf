@@ -26,7 +26,7 @@ int	ft_isstring(va_list new_list)
 	return (ft_strlen(arg));
 }
 
-int	ft_ispointer(va_list new_list)
+int	ft_ispointer(va_list new_list, char c)
 {
 	void	*ptr;
 
@@ -37,7 +37,7 @@ int	ft_ispointer(va_list new_list)
 		return (5);
 	}
 	ft_putstr_fd("0x", 1);
-	ft_putnbr_base((unsigned long)ptr);
+	ft_putnbr_base((unsigned long)ptr, c);
 	return (ft_hexa_len((unsigned long) ptr) + 2);
 }
 
@@ -82,13 +82,13 @@ int	ft_ishexa(va_list new_list, t_list *flags, char c)
 	{
 		if ((*flags).hash == 1 && x != 0)
 			ft_putstr_fd("0x", 1);
-		ft_putnbr_base(x);
+		ft_putnbr_base(x, c);
 	}
 	else
 	{
 		if ((*flags).hash == 1 && x != 0)
 			ft_putstr_fd("0X", 1);
-		ft_putnbr_base_upper(x);
+		ft_putnbr_base(x, c);
 	}
 	if ((*flags).hash == 1 && x != 0)
 		hash_count = 2;

@@ -21,11 +21,9 @@ void	ft_initialize_flags(t_list *flags)
 
 size_t	ft_check_flags(char *s, t_list *flags)
 {
-	size_t	flag;
 	size_t	j;
 
 	j = 0;
-	flag = 0;
 	while (s[j] && s[j] != 'c' && s[j] != 's' && s[j] != 'p' && s[j] != 'd'
 		&& s[j] != 'i' && s[j] != 'u' && s[j] != 'x' && s[j] != 'X'
 		&& s[j] != '%')
@@ -41,25 +39,56 @@ size_t	ft_check_flags(char *s, t_list *flags)
 	return (j + 2);
 }
 
-// int	ft_validation(char *s, t_list flags)
+// int main(void)
 // {
-// 	size_t	c;
-// 	c = 0;
-// 	if (s[c] == 'c' && (flags.space == 1 || flags.sign == 1
-//		|| flags.hash == 1))
-// 		return (0);
-// 	else if (s[c] == 's' && (flags.space == 1 || flags.sign == 1
-//		|| flags.hash == 1))
-// 		return (0);
-// 	return (1);
+//     //////// BONUS //////////
+// 	int count;
+
+// 	count = 0;
+
+// 	printf("Test0 BONUS\n");
+// 	count = printf("%#x\n", 456);
+// 	printf("count: %d\n", count);
+// 	count = ft_printf("%#x\n", 456);
+// 	printf("count: %d\n", count);
+
+// 	printf("Test1 BONUS\n");
+// 	count = printf("%#X\n", -456);
+// 	printf("count: %d\n", count);
+// 	count = ft_printf("%#X\n", -456);
+// 	printf("count: %d\n", count);
+
+//     printf("Test2 BONUS\n");
+// 	count = printf("% d\n", 42);
+// 	printf("count: %d\n", count);
+// 	count = ft_printf("% d\n", 42);
+// 	printf("count: %d\n", count);
+
+//     printf("Test3 BONUS\n");
+// 	count = printf("%+d\n", 42);
+// 	printf("count: %d\n", count);
+// 	count = ft_printf("%+d\n", 42);
+// 	printf("count: %d\n", count);
+
+// 	printf("Test4 BONUS\n");
+// 	count = printf("% d\n", -42);
+// 	printf("count: %d\n", count);
+// 	count = ft_printf("% d\n", -42);
+// 	printf("count: %d\n", count);
+
+// 	printf("Test4 BONUS\n");
+// 	count = printf("%+d\n", -42);
+// 	printf("count: %d\n", count);
+// 	count = ft_printf("%+d\n", -42);
+// 	printf("count: %d\n", count);
 // }
-//
+
 // cc -Wall -Wextra -Werror ft_flags.c ft_printf.c ft_printf.h
 // ft_lib.c ft_types.c ft_utils.c;
 //
 // int main()
 // {
-// 	ft_printf("length: %d\n", ft_printf("% +d", 42));
+// 	ft_printf("length: %d\n", ft_printf("%#+x", 42));
 // 	ft_printf("\n\n");
-// 	printf("length: %d\n", printf("% +d", 42));
+// 	printf("length: %d\n", printf("%#+x", 42));
 // }

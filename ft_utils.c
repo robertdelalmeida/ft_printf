@@ -49,34 +49,28 @@ void	ft_putptr(void *ptr)
 	write(1, ptr, ft_hexa_len((unsigned long)ptr));
 }
 
-void	ft_putnbr_base(unsigned long nb)
+void	ft_putnbr_base(unsigned long nb, char hex)
 {
 	if (nb > 15)
 	{
-		ft_putnbr_base(nb / 16);
-		ft_putnbr_base(nb % 16);
+		ft_putnbr_base(nb / 16, hex);
+		ft_putnbr_base(nb % 16, hex);
 	}
 	else
 	{
-		if (nb >= 10)
-			ft_putchar_fd(nb - 10 + 'a', 1);
+		if (hex == 'x' || hex == 'p')
+		{
+			if (nb >= 10)
+				ft_putchar_fd(nb - 10 + 'a', 1);
+			else
+				ft_putchar_fd(nb + '0', 1);
+		}
 		else
-			ft_putchar_fd(nb + '0', 1);
-	}
-}
-
-void	ft_putnbr_base_upper(unsigned long nb)
-{
-	if (nb > 15)
-	{
-		ft_putnbr_base_upper(nb / 16);
-		ft_putnbr_base_upper(nb % 16);
-	}
-	else
-	{
-		if (nb >= 10)
-			ft_putchar_fd(nb - 10 + 'A', 1);
-		else
-			ft_putchar_fd(nb + '0', 1);
+		{
+			if (nb >= 10)
+				ft_putchar_fd(nb - 10 + 'A', 1);
+			else
+				ft_putchar_fd(nb + '0', 1);
+		}
 	}
 }
