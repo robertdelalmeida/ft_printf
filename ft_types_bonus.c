@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_types.c                                         :+:      :+:    :+:   */
+/*   ft_types_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:57:46 by rdel-fra          #+#    #+#             */
-/*   Updated: 2024/11/01 12:44:07 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:49:41 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 int	ft_isstring(va_list new_list)
 {
@@ -41,13 +41,25 @@ int	ft_ispointer(va_list new_list, char c)
 	return (ft_hexa_len((unsigned long) ptr) + 2);
 }
 
-int	ft_isnumber(va_list new_list)
+int	ft_isnumber(va_list new_list, t_list *flags)
 {
 	int	d;
+	int	sign_count;
+	int	space_count;
 
+	sign_count = 0;
+	space_count = 0;
 	d = va_arg(new_list, int);
+	if ((*flags).sign == 1 && d > -1)
+		ft_putchar_fd('+', 1);
+	else if ((*flags).space == 1 && d > -1)
+		ft_putchar_fd(' ', 1);
 	ft_putnbr_fd(d, 1);
-	return (ft_nbrlen(d));
+	if ((*flags).sign == 1 && d > -1)
+		sign_count = 1;
+	else if ((*flags).space == 1 && d > -1)
+		space_count = 1;
+	return (ft_nbrlen(d) + sign_count + space_count);
 }
 
 int	ft_isunsigned(va_list new_list)
@@ -59,14 +71,26 @@ int	ft_isunsigned(va_list new_list)
 	return (ft_nbrlen(u));
 }
 
-int	ft_ishexa(va_list new_list, char c)
+int	ft_ishexa(va_list new_list, t_list *flags, char c)
 {
 	unsigned int	x;
+	int				hash_count;
 
+	hash_count = 0;
 	x = va_arg(new_list, int);
 	if (c == 'x')
+	{
+		if ((*flags).hash == 1 && x != 0)
+			ft_putstr_fd("0x", 1);
 		ft_putnbr_base(x, c);
+	}
 	else
+	{
+		if ((*flags).hash == 1 && x != 0)
+			ft_putstr_fd("0X", 1);
 		ft_putnbr_base(x, c);
-	return (ft_hexa_len(x));
+	}
+	if ((*flags).hash == 1 && x != 0)
+		hash_count = 2;
+	return (ft_hexa_len(x) + hash_count);
 }

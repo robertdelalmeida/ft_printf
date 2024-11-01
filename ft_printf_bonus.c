@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdel-fra <rdel-fra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:42:52 by rdel-fra          #+#    #+#             */
-/*   Updated: 2024/11/01 15:52:20 by rdel-fra         ###   ########.fr       */
+/*   Updated: 2024/11/01 15:51:42 by rdel-fra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 int	ft_printf(const char *format, ...)
 {
@@ -22,13 +22,12 @@ int	ft_printf(const char *format, ...)
 	va_start(new_list, format);
 	count = ft_search_percent(new_list, (char *)format);
 	va_end(new_list);
-	if (count == -1)
-		return (0);
 	return (count);
 }
 
 size_t	ft_search_percent(va_list new_list, char *format)
 {
+	t_list	flags;
 	size_t	count;
 	size_t	i;
 	size_t	j;
@@ -38,11 +37,13 @@ size_t	ft_search_percent(va_list new_list, char *format)
 	count = 0;
 	while (format[i] != '\0')
 	{
+		ft_initialize_flags(&flags);
 		if (format[i] == '%')
 		{
 			i++;
-			count += ft_check_type(format, i, new_list);
-			j += 2;
+			j += ft_check_flags(&format[i], &flags);
+			count += ft_check_type(format, i, new_list, &flags);
+			i += ft_jump(format, i);
 		}
 		else
 			ft_putchar_fd(format[i], 1);
@@ -51,10 +52,12 @@ size_t	ft_search_percent(va_list new_list, char *format)
 	return (i + count - j);
 }
 
-size_t	ft_check_type(char *str, size_t len, va_list new_list)
+size_t	ft_check_type(char *str, size_t len, va_list new_list, t_list *flags)
 {
 	size_t	count;
 
+	while (str[len] == '#' || str[len] == ' ' || str[len] == '+')
+		len++;
 	count = 0;
 	if (str[len] == 'c')
 		count += ft_ischar(new_list);
@@ -63,17 +66,27 @@ size_t	ft_check_type(char *str, size_t len, va_list new_list)
 	else if (str[len] == 'p')
 		count += ft_ispointer(new_list, 'p');
 	else if (str[len] == 'd' || str[len] == 'i')
-		count += ft_isnumber(new_list);
+		count += ft_isnumber(new_list, flags);
 	else if (str[len] == 'u')
 		count += ft_isunsigned(new_list);
 	else if (str[len] == 'x' || str[len] == 'X')
-		count += ft_ishexa(new_list, str[len]);
+		count += ft_ishexa(new_list, flags, str[len]);
 	else
 	{
 		ft_putchar_fd('%', 1);
 		count += 1;
 	}
 	return (count);
+}
+
+size_t	ft_jump(char *str, size_t len)
+{
+	size_t	j;
+
+	j = 0;
+	while (str[len + j] == '#' || str[len + j] == ' ' || str[len + j] == '+')
+		j++;
+	return (j);
 }
 
 int	ft_ischar(va_list new_list)
@@ -99,11 +112,12 @@ int	main(void)
 
     count = 0;
 
-    //cc -w ft_printf.c ft_printf.h ft_lib.c ft_types.c ft_utils.c
+    //cc -w ft_printf_bonus.c ft_printf_bonus.h ft_lib_bonus.c 
+	//ft_types_bonus.c ft_utils_bonus.c ft_flags_bonus.c
 	//-Wall -Wextra -Werror
     //compile with -w
 
-	//Test 1: c, s, d, i
+	// //Test 1: c, s, d, i
 	printf("Test1\n");
 	count = ft_printf("%s  %c  %d  %i\n", str, ch, i, i);
 	printf("ft_printf count = %d\n\n", count);
@@ -223,6 +237,80 @@ int	main(void)
 	printf("printf count = %d\n", count);
 	count = ft_printf("%s\n", "");
 	printf("ft_printf count = %d\n\n", count);
+
+	////////// BONUS //////////
+
+	printf("Test0 BONUS\n");
+	count = printf("%#x\n", 456);
+	printf("count: %d\n", count);
+	count = ft_printf("%#x\n", 456);
+	printf("count: %d\n\n", count);
+
+	printf("Test1 BONUS\n");
+	count = printf("%#X\n", -456);
+	printf("count: %d\n", count);
+	count = ft_printf("%#X\n", -456);
+	printf("count: %d\n\n", count);
+
+    printf("Test2 BONUS\n");
+	count = printf("% d\n", 42);
+	printf("count: %d\n", count);
+	count = ft_printf("% d\n", 42);
+	printf("count: %d\n\n", count);
+
+    printf("Test3 BONUS\n");
+	count = printf("%+d\n", 42);
+	printf("count: %d\n", count);
+	count = ft_printf("%+d\n", 42);
+	printf("count: %d\n\n", count);
+
+	printf("Test4 BONUS\n");
+	count = printf("% +#d\n", -42);
+	printf("count: %d\n", count);
+	count = ft_printf("% +#d\n", -42);
+	printf("count: %d\n\n", count);
+
+	printf("Test5 BONUS\n");
+	count = printf("% +d\n", -42);
+	printf("count: %d\n", count);
+	count = ft_printf("% +d\n", -42);
+	printf("count: %d\n\n", count);
+
+	printf("Test6 BONUS\n");
+	count = printf("% +#x\n", 456);
+	printf("count: %d\n", count);
+	count = ft_printf("% +#x\n", 456);
+	printf("count: %d\n\n", count);
+
+	printf("Test7 BONUS\n");
+	count = printf("% +#X\n", -456);
+	printf("count: %d\n", count);
+	count = ft_printf("% +#X\n", -456);
+	printf("count: %d\n\n", count);
+
+    printf("Test8 BONUS\n");
+	count = printf("% i\n", 42);
+	printf("count: %d\n", count);
+	count = ft_printf("% i\n", 42);
+	printf("count: %d\n\n", count);
+
+    printf("Test9 BONUS\n");
+	count = printf("%+i\n", 42);
+	printf("count: %d\n", count);
+	count = ft_printf("%+i\n", 42);
+	printf("count: %d\n\n", count);
+
+	printf("Test10 BONUS\n");
+	count = printf("% +#i\n", -42);
+	printf("count: %d\n", count);
+	count = ft_printf("% +#i\n", -42);
+	printf("count: %d\n\n", count);
+
+	printf("Test11 BONUS\n");
+	count = printf("% +i\n", -42);
+	printf("count: %d\n", count);
+	count = ft_printf("% +i\n", -42);
+	printf("count: %d\n\n", count);
 }
 */
 /*
@@ -253,7 +341,7 @@ int main(void)
 	original = printf("c flag: %c|%c|%c|%c|%c\n", 'r', str[2],
      97 - 32, *str, 48);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -264,7 +352,7 @@ int main(void)
     original = printf("s flag: %s|%s|%s|%s|%s|%s\n", "12ozmouse",
      str, str + 2, "", "-", nulo);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
     
     ft_printf("\n---------my func-----------\n");
@@ -275,7 +363,7 @@ int main(void)
     original = printf("p flag: %p|%p|%p|%p|%p|%p\n", str, &str, ptr, &ptr, 
 	nulo, &nulo);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -286,7 +374,7 @@ int main(void)
     original = printf("d flag: %d|%d|%d|%d|%d\n", 7, -7, 0,
      2147483647, -2147483647 - 1);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -297,7 +385,7 @@ int main(void)
     original = printf("i flag: %i|%i|%i|%i|%i\n", 7, -7, 0,
      2147483647, -2147483647 - 1);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -308,7 +396,7 @@ int main(void)
     original = printf("u flag: %u|%u|%u|%u|%u\n", 7, -7, 0,
      2147483647, -2147483647 - 1);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -319,7 +407,7 @@ int main(void)
     original = printf("x flag: %x|%x|%x|%x|%x\n", 7, -7, 0,
      2147483647, -2147483647 - 1);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -330,7 +418,7 @@ int main(void)
     original = printf("X flag: %X|%X|%X|%X|%X\n", 7, -7, 0,
      2147483647, -2147483647 - 1);
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -339,7 +427,7 @@ int main(void)
     ft_printf("\n---------original-----------\n");
     original = printf("%% flag: %% | %%|%% \n");
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -350,7 +438,7 @@ int main(void)
     original = printf(", I've printed %d characters!\n",
      printf("d flag: %d|%d|%d|%d", 0, -37, 37, 187398217));
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -361,7 +449,7 @@ int main(void)
     original = printf(", I've printed %d characters!\n",
      printf("d flag: %d|%d|%d|%d", 0, -22222, 'n', 0));
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -372,7 +460,7 @@ int main(void)
     original = printf(", I've printed %d characters!\n",
      printf("INT MIN: %d", -2147483647 - 1));
 
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
     ft_printf("\n---------my func-----------\n");
@@ -383,7 +471,7 @@ int main(void)
     original = printf("MIXED:%c|%s|%p|%d|%i|%u|%x|%X|%%\n", str[6], 
 	nulo, str, -912387, 00000, -99, 743, 743);
     
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 
 
@@ -393,7 +481,7 @@ int main(void)
     ft_printf("\n---------original-----------\n");
     original = printf(NULL);
     
-    ft_printf("\n---------result-----------\n");
+    ft_printf("\n---------resultado-----------\n");
     printcmp(myfunc, original);
 }
 */
