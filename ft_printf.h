@@ -16,13 +16,6 @@
 # include <unistd.h>
 # include <stdarg.h>
 
-typedef struct t_list
-{
-	int		sign;
-	int		space;
-	int		hash;
-}	t_list;
-
 int		ft_printf(const char *format, ...);
 int		ft_ischar(va_list new_list);
 int		ft_isstring(va_list new_list);
